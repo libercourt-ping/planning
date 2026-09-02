@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="scripts/them.js"></script>
+    <title>Planning 2026</title>
+    <link rel="stylesheet" href="template.css" />
+  </head>
+  <body class="light">
+    <div
+      class="flex gap-4 w-full items-center px-2 lg:px-0 lg:justify-center bg-gray-700 text-white uppercase sticky top-0 left-0 py-4"
+      id="banner"
+    >
+      <img src="logo.jpg" alt="logo du club" width="50" />
+      <div class="flex flex-col text-xs lg:text-base">
+        <h1>Club Pongiste Libercourtois</h1>
+        <h2>Planning 2026 - Phase 1</h2>
+      </div>
+
+      <button
+        class="absolute right-2 border border-solid rounded-full hover:bg-gray-500 cursor-pointer p-1"
+        id="thematic"
+      ></button>
+    </div>
+    <div
+      class="flex flex-col p-2 gap-2 max-w-full max-h-full overflow-x-hidden overflow-y-scroll"
+    >
+      <div class="grid lg:grid-cols-3 grid-cols-1 gap-4" id="grille"></div>
+    </div>
+
+    <script type="module" src="scripts/d1.js"></script>
+    <script type="module" src="scripts/d2.js"></script>
+    <script type="module" src="scripts/d4.js"></script>
+    <script type="module" src="scripts/mobile.js"></script>
+  </body>
+</html>
