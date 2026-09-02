@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+body {
+  @apply flex flex-col min-w-screen min-h-screen;
+}
+
+body.dark {
+  @apply bg-[#333] text-white;
+}
+
+body.light {
+  @apply bg-gray-200;
+}
