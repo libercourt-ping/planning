@@ -16,8 +16,18 @@ const j2_2 = new Poule(
   "WINGLES TT 1",
   "CARVIN ATT 1",
   "ESSARS TT 1",
-  "SAINT LAUREN/BLANG 1",
+  "ST LAURENT/BLANGY 1",
 );
 
 Poule.init(Poule.getFormat(4), datesJuniors, j2_1);
 Poule.init(Poule.getFormat(8), datesJuniors, j2_2);
+
+j2_1.addScoreJournee("4-5", "1-9");
+j2_1.addScoreJournee("9-1", "10-0");
+j2_1.addScoreJournee("7-3", "5-4");
+j2_1.getClassement();
+
+j2_2.addScoreJournee("6-4", "6-4", "7-3", "5-5");
+j2_2.addScoreJournee("0-10", "9-1", "10-0", "2-8");
+j2_2.addScoreJournee("3-7", "4-6", "1-9", "4-6");
+j2_2.getClassement();

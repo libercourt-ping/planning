@@ -6,8 +6,28 @@ body {
 
 body.dark {
   @apply bg-[#333] text-white;
+  & .title-journey {
+    @apply text-blue-200;
+  }
+
+  & .numero {
+    @apply text-[#333] bg-white;
+  }
+
+  & .recap {
+    @apply bg-[#222];
+  }
 }
 
 body.light {
-  @apply bg-gray-200;
+  @apply bg-gray-200 text-[#333];
+  & .title-journey {
+    @apply text-blue-800;
+  }
+  & .numero {
+    @apply bg-[#333] text-white;
+  }
+  & .recap {
+    @apply bg-gray-400;
+  }
 }
