@@ -13,3 +13,4 @@ const d2 = new Poule(
 );
 
 Poule.init(Poule.getFormat(8), datesDepartementales, d2);
+d2.addScoreJournee(1, ["10-4", "2-12", "8-6", "8-6"]);

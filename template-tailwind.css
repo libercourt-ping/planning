@@ -6,8 +6,14 @@ body {
 
 body.dark {
   @apply bg-[#333] text-white;
+  & .title-journey {
+    @apply text-blue-200;
+  }
 }
 
 body.light {
   @apply bg-gray-200;
+  & .title-journey {
+    @apply text-blue-800;
+  }
 }

@@ -16,8 +16,10 @@ const j2_2 = new Poule(
   "WINGLES TT 1",
   "CARVIN ATT 1",
   "ESSARS TT 1",
-  "SAINT LAUREN/BLANG 1",
+  "ST LAURENT/BLANGY 1",
 );
 
 Poule.init(Poule.getFormat(4), datesJuniors, j2_1);
 Poule.init(Poule.getFormat(8), datesJuniors, j2_2);
+j2_1.addScoreJournee(1, ["4-5", "1-9"]);
+j2_2.addScoreJournee(1, ["6-4", "6-4", "7-3", "5-5"]);
