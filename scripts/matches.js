@@ -26,6 +26,15 @@ export class Match {
     this.indexMark = indexMark;
     this.isExemptMatch = isExemptMatch;
   }
+
+  /**
+   *
+   * @param {string} score
+   */
+  addScore(score1, score2) {
+    this.score1 = score1;
+    this.score2 = score2;
+  }
 }
 
 export class Poule {
@@ -40,7 +49,7 @@ export class Poule {
    */
   constructor(ligue, ...clubs) {
     this.ligue = ligue;
-    this.clubs = clubs;
+    this.clubs = clubs.map((el) => ({ name: el, score: 0 }));
     this.name = clubs.filter((el) => el.toUpperCase().includes("LIBERCOURT"));
     /**
      * @type { Match[] }
@@ -70,11 +79,170 @@ export class Poule {
     return null;
   }
 
+  getClassement() {
+    if (!this.allMatchs.some((el) => el.score1 != null)) {
+      return;
+    }
+    const destAfter = document.getElementById("title-" + this.valueTitle);
+    const recap = document.createElement("div");
+    recap.classList.add(
+      "flex",
+      "flex-col",
+      "w-[calc(100%-1rem)]",
+      "min-h-2",
+      "gap-2",
+      "m-2",
+      "p-2",
+      "recap",
+      "rounded-lg",
+    );
+    destAfter.insertAdjacentElement("afterend", recap);
+    this.allMatchs.forEach((match) => {
+      const score1 = match.score1;
+      const score2 = match.score2;
+      if (score1 != null && score2 != null) {
+        const club1 = this.clubs.find((el) => el.name === match.equipe1);
+        const club2 = this.clubs.find((el) => el.name === match.equipe2);
+        if (score1 < score2) {
+          club1.score += 1;
+          club2.score += 3;
+        } else if (score1 > score2) {
+          club1.score += 3;
+          club2.score += 1;
+        } else if (score1 === score2) {
+          club1.score += 2;
+          club2.score += 2;
+        }
+      }
+    });
+    const title = document.createElement("span");
+    title.textContent = "Classement";
+    title.classList.add(
+      "py-2",
+      "mb-2",
+      "text-center",
+      "w-full",
+      "uppercase",
+      "font-semibold",
+    );
+    recap.appendChild(title);
+    const sortedClubs = [...this.clubs]
+      .filter((el) => el.name !== "/")
+      .sort((a, b) => b.score - a.score);
+
+    let lastIndex = 0;
+    sortedClubs.forEach((el, index, arr) => {
+      const divInfo = document.createElement("div");
+      const spanSpace = document.createElement("span");
+      spanSpace.classList.add("flex-1");
+      divInfo.classList.add("flex", "w-full", "gap-4", "items-center");
+      const numero = document.createElement("span");
+      numero.classList.add(
+        "px-2",
+        "py-0.5",
+        "rounded-lg",
+        "numero",
+        "text-sm",
+        "font-bold",
+      );
+      const team = document.createElement("span");
+      team.classList.add("text-sm", "capitalize");
+      if (el.name.toUpperCase().includes("LIBERCOURT")) {
+        team.classList.add("bg-amber-200", "text-[#333]", "p-1", "rounded-lg");
+      }
+      const points = document.createElement("span");
+      team.textContent = el.name.toLowerCase();
+      const previous = arr[index - 1];
+      if (!previous) {
+        lastIndex += 1;
+      } else if (previous.score !== el.score) {
+        lastIndex += 1;
+      }
+      numero.textContent = lastIndex;
+      points.textContent = el.score + " points";
+      points.classList.add("text-sm", "italic", "underline")
+      divInfo.appendChild(numero);
+      divInfo.appendChild(team);
+      divInfo.appendChild(spanSpace);
+      divInfo.appendChild(points);
+      recap.appendChild(divInfo);
+    });
+  }
+
+  /**
+   *
+   * @param {number} journee
+   * @param {string[]} scores
+   */
+  addScoreJournee(journee, ...scores) {
+    scores.forEach((el, index) => {
+      if (el === "/") {
+        return;
+      }
+      const indexMatch = (journee - 1) * scores.length + index;
+      const divTeam = document.getElementById(
+        `${this.ligue}-${this.name}_journey_${journee}_${indexMatch}`,
+      );
+
+      divTeam.classList.add("relative");
+      const divScore = document.createElement("div");
+      divScore.classList.add(
+        "flex",
+        "h-full",
+        "absolute",
+        "top-0",
+        "-right-14",
+        "ml-4",
+      );
+
+      const scoresMap = el.split("-").map((el) => parseInt(el));
+      const [scoreA, scoreB] = scoresMap;
+      this.allMatchs[indexMatch].addScore(scoreA, scoreB);
+
+      const spanScore = document.createElement("span");
+      spanScore.classList.add(
+        "font-bold",
+        "text-[10px]",
+        "my-auto",
+        "text-yellow-300",
+        "w-fit",
+        "px-2",
+        "inline-flex",
+        "h-fit",
+        "rounded-lg",
+        "bg-gray-500",
+      );
+      spanScore.textContent = `${scoreA}\u00A0\u00A0-\u00A0\u00A0${scoreB}`;
+      divScore.appendChild(spanScore);
+      divTeam.insertAdjacentElement("beforeend", divScore);
+
+      // Ajout des couleurs en fonction de la victoire ou non
+      const children = Array.from(divTeam.children);
+      const [childA, _, childB] = children;
+
+      const colors = {
+        WIN: "text-green-600",
+        LOSE: "text-red-600",
+        EQUAL: "text-gray-600",
+      };
+      if (scoreA > scoreB) {
+        childA.classList.add(colors.WIN);
+        childB.classList.add(colors.LOSE);
+      } else if (scoreA < scoreB) {
+        childA.classList.add(colors.LOSE);
+        childB.classList.add(colors.WIN);
+      } else {
+        childA.classList.add(colors.EQUAL, "italic");
+        childB.classList.add(colors.EQUAL, "italic");
+      }
+    });
+  }
+
   addMatch(date, index1, index2) {
     /**
      * @type {string[]}
      */
-    const clubs = [this.clubs[index1], this.clubs[index2]];
+    const clubs = [this.clubs[index1].name, this.clubs[index2].name];
     const isInteresting = clubs.findIndex((el) =>
       el.toUpperCase().includes("LIBERCOURT"),
     );
@@ -116,6 +284,19 @@ export class Poule {
     });
   }
 
+  /**
+   * Permet de rajouter une majuscule sur les initiales de chaque mot
+   * @param {string} value
+   */
+  static capitalize(value) {
+    return value
+      .trim()
+      .toLowerCase()
+      .split(" ")
+      .map((el) => el[0].toUpperCase() + el.substring(1))
+      .join(" ");
+  }
+
   display() {
     const div = document.createElement("div");
     div.classList.add(
@@ -128,10 +309,11 @@ export class Poule {
       "h-fit",
     );
     const title = document.createElement("span");
-    const valueTitle = this.ligue + " - " + this.name;
-    div.id = valueTitle;
-    Poule.ligues.push(valueTitle);
-    title.textContent = valueTitle;
+    this.valueTitle = this.ligue + " - " + this.name;
+    div.id = this.valueTitle;
+    Poule.ligues.push(this.valueTitle);
+    title.textContent = this.valueTitle;
+    title.id = "title-" + this.valueTitle;
     title.classList.add(
       "text-center",
       "border-b",
@@ -149,22 +331,23 @@ export class Poule {
       "bg-indigo-500",
     ];
     ligues.forEach((el, index) => {
-      if (valueTitle.startsWith(el)) {
+      if (this.valueTitle.startsWith(el)) {
         title.classList.add(valueCss[index]);
       }
     });
     div.appendChild(title);
     document.getElementById("grille").appendChild(div);
     const dealedDate = [];
+
     this.allMatchs.forEach((el, index, arr) => {
       if (!dealedDate.includes(el.date)) {
         const date = document.createElement("span");
         date.textContent = el.date;
         date.classList.add(
           "text-center",
-          "mb-1",
+          "mb-3",
           "text-sm",
-          "text-blue-800",
+          "title-journey",
           "italic",
         );
         div.appendChild(date);
@@ -179,9 +362,12 @@ export class Poule {
         }
       }
       const divTeam = document.createElement("div");
+      const nbJournee = parseInt(index / (this.clubs.length / 2));
+
+      divTeam.id = `${this.ligue}-${this.name}_journey_${nbJournee + 1}_${index}`;
       divTeam.classList.add(
-        "lg:mx-[10%]",
-        "mx-2",
+        "lg:ml-[10%]",
+        "ml-2",
         "px-1",
         "text-xs",
         "w-fit",
@@ -193,19 +379,21 @@ export class Poule {
         const span = document.createElement("span");
         span.textContent =
           "Aucun match pour " +
-          (el.equipe1 === "/" ? el.equipe2 : el.equipe1) +
+          (el.equipe1 === "/"
+            ? Poule.capitalize(el.equipe2)
+            : Poule.capitalize(el.equipe1)) +
           " (exempté)";
         span.classList.add("italic", "font-semibold", "text-amber-700");
         divTeam.appendChild(span);
         div.appendChild(divTeam);
       } else {
         const spanTeam1 = document.createElement("span");
-        spanTeam1.textContent = el.equipe1;
+        spanTeam1.textContent = Poule.capitalize(el.equipe1);
 
         const spanSpace = document.createElement("span");
         spanSpace.textContent = "\u00A0-\u00A0";
         const spanTeam2 = document.createElement("span");
-        spanTeam2.textContent = el.equipe2;
+        spanTeam2.textContent = Poule.capitalize(el.equipe2);
         divTeam.appendChild(spanTeam1);
         divTeam.appendChild(spanSpace);
         divTeam.appendChild(spanTeam2);
