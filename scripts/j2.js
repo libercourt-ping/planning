@@ -25,9 +25,13 @@ Poule.init(Poule.getFormat(8), datesJuniors, j2_2);
 j2_1.addScoreJournee("4-5", "1-9");
 j2_1.addScoreJournee("9-1", "10-0");
 j2_1.addScoreJournee("7-3", "5-4");
+j2_1.addScoreJournee("10-F", "4-6");
+// j2_1.addScoreJournee("-", "-");
 j2_1.getClassement();
 
 j2_2.addScoreJournee("6-4", "6-4", "7-3", "5-5");
 j2_2.addScoreJournee("0-10", "9-1", "10-0", "2-8");
 j2_2.addScoreJournee("3-7", "4-6", "1-9", "4-6");
+j2_2.addScoreJournee("6-4", "8-2", "6-4", "7-3");
+// j2_2.addScoreJournee("-", "-", "-", "-");
 j2_2.getClassement();

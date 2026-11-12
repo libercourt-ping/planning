@@ -16,5 +16,6 @@ Poule.init(Poule.getFormat(8), datesDepartementales, d2);
 d2.addScoreJournee("10-4", "2-12", "8-6", "8-6");
 d2.addScoreJournee("13-1", "4-10", "12-2", "4-10");
 d2.addScoreJournee("13-1", "6-8", "1-13", "4-10");
+d2.addScoreJournee("11-3", "9-5", "1-13", "1-13");
 // d2.addScoreJournee("-", "-", "-", "-");
 d2.getClassement();

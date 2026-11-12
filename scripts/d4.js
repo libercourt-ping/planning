@@ -28,9 +28,11 @@ Poule.init(Poule.getFormat(8), datesDepartementales, d4_1, d4_2);
 d4_1.addScoreJournee("10-4", "/", "11-3", "0-14");
 d4_1.addScoreJournee("9-5", "/", "7-7", "0-14");
 d4_1.addScoreJournee("5-9", "/", "12-2", "10-4");
+d4_1.addScoreJournee("8-6", "/", "13-1", "11-3");
 d4_1.getClassement();
 
 d4_2.addScoreJournee("8-6", "5-9", "3-11", "14-P");
 d4_2.addScoreJournee("P-14", "14-F", "10-4", "8-6");
 d4_2.addScoreJournee("11-3", "5-9", "5-9", "11-3");
+d4_2.addScoreJournee("10-4", "4-10", "5-9", "4-10");
 d4_2.getClassement();
